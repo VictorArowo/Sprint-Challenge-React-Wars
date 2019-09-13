@@ -7,7 +7,7 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 60%;
+  width: 70%;
 `;
 
 const Characters = props => {

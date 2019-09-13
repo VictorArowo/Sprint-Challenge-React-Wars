@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './App.css';
 import styled from 'styled-components';
 import Characters from './components/Characters';
 
@@ -14,11 +13,32 @@ const Container = styled.div`
   .button {
     width: 75px;
     height: 75px;
-    border-radius: 20px;
+    border-radius: 50%;
     color: white;
     background-color: black;
     margin: auto auto;
+    border: none;
+    border: 2px solid white;
+
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+      outline: none;
+    }
+
+    &:disabled {
+      transform: scale(1);
+      cursor: not-allowed;
+    }
   }
+`;
+
+const Header = styled.div`
+  color: #443e3e;
+  text-shadow: 1px 1px 5px #fff;
+  font-size: 70px;
+  margin-bottom: 20px;
+  text-align: center;
 `;
 
 const App = () => {
@@ -41,9 +61,13 @@ const App = () => {
   return (
     characterData && (
       <div>
-        <h1 className="Header">React Wars</h1>
+        <Header>React Wars</Header>
         <Container>
-          <button className="button" onClick={handleClick}>
+          <button
+            className="button"
+            disabled={!characterData.previous}
+            onClick={handleClick}
+          >
             Previous
           </button>
           <Characters data={characterData.results} />
