@@ -1,19 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
+import styled from 'styled-components';
+import Characters from './components/Characters';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+
+  .button {
+    width: 75px;
+    height: 75px;
+    border-radius: 20px;
+    color: white;
+    background-color: black;
+    margin: auto auto;
+  }
+`;
 
 const App = () => {
-  // Try to think through what state you'll need for this app before starting. Then build out
-  // the state properties here.
+  const [characterData, setCharacters] = useState(null);
+  const [url, changeUrl] = useState('https://swapi.co/api/people/?format=json');
 
-  // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
+  useEffect(() => {
+    axios.get(url).then(res => {
+      setCharacters(res.data);
+      console.log(res.data.results);
+    });
+    // .then(() => console.log(characterData));
+  }, [url]);
+
+  const handleClick = e => {
+    e.preventDefault();
+    if (characterData.next) changeUrl(characterData.next);
+  };
 
   return (
-    <div className="App">
-      <h1 className="Header">React Wars</h1>
-    </div>
+    characterData && (
+      <div>
+        <h1 className="Header">React Wars</h1>
+        <Container>
+          <button className="button" onClick={handleClick}>
+            Previous
+          </button>
+          <Characters data={characterData.results} />
+          <button className="button" onClick={handleClick}>
+            Next
+          </button>
+        </Container>
+      </div>
+    )
   );
-}
+};
 
 export default App;
